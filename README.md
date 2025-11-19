@@ -118,89 +118,139 @@ El dataset contiene características relacionadas con:
 El corazón del análisis responde 5 preguntas clave:
 
 # 🧠 PREGUNTA 1:
-## ¿Existen patrones de fraude por MES del accidente?
+## PREGUNTA 1: ¿Hay meses del año con mayor incidencia de fraude?
 
-## Se analizan:
+![Pregunta 1](https://github.com/user-attachments/assets/5ba841f6-cc7d-4c35-812b-95440a177d37)
+
+## **Interpretacion:**
+
+Los datos revelan un patron estacional de fraude:
+
+- **Primer semestre (Ene-Jun):** Concentra el 87% de los fraudes
+  - Marzo pico maximo: 12.56% de tasa de fraude
+  - Q1 y Q2 tienen tasas >10%
+
+- **Segundo semestre (Jul-Dic):** Casi libre de fraude
+  - Q3 solo 0.44% de fraude (24 veces MENOR que Q1)
+  - Septiembre y Octubre: 0% de fraude
+
+- **Patron de reclamacion:** Los defraudadores reclaman inmediatamente
+  - El heatmap muestra concentracion en la diagonal (mismo mes)
+  - No esperan para reclamar, actuan rapido
+
+## **Implicacion de Negocio:**
+
+### Este patron NO puede ser coincidencia. Sugiere comportamiento deliberado
+### y planificado. Se recomienda reforzar controles en el primer semestre
+### del año, especialmente en marzo-mayo.
 ------------
--  Mes del accidente
-
--  Mes de reclamación
-
--  Distribución de fraude por mes
-
-## Hallazgos clave:
-
-- Meses con mayor fraude: enero, abril y mayo.
-
-- Meses con menor fraude: julio y noviembre.
-
-- Las reclamaciones fraudulentas tienden a concentrarse al inicio del año.
-
 ------------
 
 # 🧠 PREGUNTA 2:
 
-## ¿Existen patrones por DÍA DE LA SEMANA?
-
+## PREGUNTA 2: ¿Hay días de la semana con mayor proporción de casos fraudulentos?
 ##Se examinan:
 
-------------
-- Día del accidente
+![Pregunta 2](https://github.com/user-attachments/assets/70506557-d6ef-4425-b5bb-ea17a981398f)
 
-- Día de la reclamación
+## **Interpretacion:**
 
-## Hallazgos clave:
+Los datos revelan comportamiento RACIONAL por parte de los defraudadores:
 
-- Martes y jueves muestran tasas de fraude anormalmente altas.
+### - **Accidentes:** Prefieren el DOMINGO (8.44% de fraude, el más alto)
+  - Fin de semana: 7.55% vs Días laborales: 6.22%
+  - Jueves es el día más seguro (4.94%)
 
-- Viernes presenta incremento también.
+### - **Reclamaciones:** IMPOSIBLES en fin de semana (0% sábado y domingo)
+  - Las oficinas solo operan días laborales
+  - Martes es el pico (7.87%) - acumulación post-fin de semana
+  - Viernes también alto (7.67%) - antes del cierre semanal
 
-- Sábados y domingos presentan menor incidencia.
+### - **Patron de timing:** Los defraudadores NO reclaman el mismo día de la semana
+  - Diferentes días: 7.01% de fraude
+  - Mismo día: 4.64% (51% MENOS fraude)
+  - Sugiere intento de evitar patrones detectables
 
-------------
+### **Implicacion de Negocio:**
+El patrón semanal es MENOS dramático que el mensual, pero muestra que
+los defraudadores entienden las restricciones operativas y actúan en
+consecuencia. Se recomienda monitoreo especial de accidentes dominicales
+y reclamaciones de los martes.
 
 
 
 # 🧠 PREGUNTA 3:
-## ¿Cuál es la diferencia temporal entre accidente y reclamación?
+## PREGUNTA 3: ¿Cuál es la diferencia temporal entre el accidente y la reclamación en casos de fraude?
 
-## Se analiza:
 
-- Meses transcurridos entre accidente → reporte
+**Inter![Pregunta 3](https://github.com/user-attachments/assets/c8485855-263e-4901-b911-db8e26fc5ac5)
+pretacion:**
 
-- Comparación entre casos fraudulentos y legítimos
+Los datos revelan un patron CONTRAINTUITIVO sobre la velocidad de reclamacion:
 
-## Conclusiones:
+### - **Los fraudulentos reclaman MAS LENTO:**
+  - Promedio fraude: 0.59 meses
+  - Promedio legitimo: 0.38 meses
+  - Diferencia: 55% mas tiempo (p < 0.001)
 
-- El fraude suele tardarse más en reportarse.
+### - **Mismo mes = Menor riesgo:**
+  - Tasa de fraude: 5.37% (la mas baja)
+  - Las victimas reales reclaman INMEDIATAMENTE
 
-- La ventana "mes siguiente" concentra el 25% del fraude, más del doble que el mismo mes del accidente.
+### - **Esperar 2-3 meses = Maximo riesgo:**
+  - Tasa de fraude: 11.04% (mas del DOBLE que mismo mes)
+  - Los defraudadores esperan estrategicamente
 
-- Los reclamos inmediatos (mismo día) rara vez son fraudulentos.
-- 
+### - **Diferente mes vs Mismo mes:**
+  - Diferente: 9.64% de fraude
+  - Mismo: 5.37% de fraude (80% MENOS)
+
+### **Implicacion de Negocio:**
+Este hallazgo contradice el mito de que "reclamaciones rapidas son sospechosas".
+La realidad es OPUESTA: las reclamaciones inmediatas son mas legitimas.
+Los defraudadores muestran comportamiento calculado, esperando 1-3 meses
+para evitar parecer urgentes. Se recomienda invertir la logica de alertas
+y enfocar investigaciones en reclamaciones DIFERIDAS, no inmediatas.
+
+
 # 🧠 PREGUNTA 4:
-## ¿Podemos construir un Índice de Riesgo Temporal (IRT)?
+## PREGUNTA 4: ¿Los patrones temporales identifican banderas rojas para deteccion temprana?
+![Pregunta 4](https://github.com/user-attachments/assets/3b39656d-6942-4c92-b551-8a865341d974)
+**Interpretacion:**
 
-Se desarrolla un índice que combina:
+El Indice de Riesgo Temporal (IRT) demuestra ser una herramienta
+ALTAMENTE efectiva para deteccion temprana de fraude:
 
-- Mes del accidente
+### - **Escalera de riesgo perfecta:**
+  - Bajo: 1.28% (5x MENOS que promedio)
+  - Muy Alto: 17.27% (2.6x MAS que promedio)
+  - Contraste: 13.5x de diferencia
 
-- Mes de la reclamación
+### - **Eficiencia comprobada:**
+  - Con solo 22.9% de casos (Alto/Muy Alto)
+  - Se captura 47.4% de todos los fraudes
+  - ROI: 2x (el doble de rendimiento)
 
-- Diferencia temporal
+### - **Recall: 47%** - Capturamos casi la MITAD de fraudes
+  revisando menos de la CUARTA PARTE de casos
 
-- Días de la semana
+### **Implicacion de Negocio:**
+El IRT permite priorizar investigaciones de forma inteligente,
+concentrando recursos donde realmente esta el fraude. Con solo
+5 factores temporales simples, logramos identificar casos de
+alto riesgo con precision suficiente para reducir workload en 77%
+mientras mantenemos capacidad de deteccion del 47%.
 
-- Meses críticos
-
-## Resultados del IRT:
-
-- Se identifican combinaciones específicas de fecha → reclamación con mayor probabilidad de fraude.
-
-- Mejora el recall del análisis con 47% de identificación de fraude.
-
+Se recomienda implementacion inmediata del IRT como sistema de
+scoring para clasificacion automatica de reclamaciones en:
+- Verde (Bajo): Procesamiento automatico
+- Amarillo (Medio): Validacion estandar
+- Rojo (Alto/Muy Alto): Investigacion profunda prioritaria
+- 
 # 🧠 PREGUNTA 5:
-## ¿El tipo de vehículo influye en los patrones temporales?
+## PREGUNTA 5: ¿El tipo de vehículo también influye en el IRT?
+
+![Pregunta 5](https://github.com/user-attachments/assets/b08fea36-5a1b-443e-bafa-fca3470ef354)
 
 ## Hallazgos:
 
